@@ -1,0 +1,409 @@
+:root {
+    --bg-color: #f8f9fc;
+    --text-color: #2d3748;
+    --primary-color: #4a5568;
+    --accent-color: #3182ce;
+    --success-color: #48bb78;
+    --warning-color: #ed8936;
+    --danger-color: #f56565;
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.logo span {
+    color: var(--accent-color);
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #718096;
+    font-weight: 600;
+    margin-left: 20px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.nav-links a.active {
+    color: var(--text-color);
+    border-bottom-color: var(--accent-color);
+}
+
+/* Stage Banner */
+.stage-banner {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stage-review {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    color: #4a3b2a;
+}
+
+.stage-drafts {
+    background: linear-gradient(135deg, #dad4ec 0%, #f3e7e9 100%);
+    color: #4a3b2a;
+}
+
+.stage-content h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.stage-content p {
+    margin: 5px 0 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.stage-count {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Card */
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.card-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fcfcfc;
+}
+
+.item-id {
+    font-weight: 600;
+    color: #718096;
+}
+
+.match-score {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.score-high {
+    background: #c6f6d5;
+    color: #22543d;
+}
+
+.score-med {
+    background: #feebc8;
+    color: #744210;
+}
+
+.score-low {
+    background: #fed7d7;
+    color: #742a2a;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 600px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+.info-section h3 {
+    margin-top: 0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #a0aec0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.info-row .label {
+    color: #718096;
+}
+
+.info-row .value {
+    font-weight: 500;
+    text-align: right;
+}
+
+.price-tag {
+    display: inline-block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-top: 10px;
+}
+
+/* Actions */
+.card-footer {
+    padding: 20px;
+    background: #f8fafc;
+    border-top: 1px solid var(--border-color);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.flex-form {
+    flex: 1;
+    display: flex;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-confirm {
+    background: var(--success-color);
+    color: white;
+}
+
+.btn-reject {
+    background: var(--danger-color);
+    color: white;
+}
+
+.btn-list {
+    background: var(--accent-color);
+    color: white;
+    width: 100%;
+}
+
+/* Form */
+.listing-form-wrapper {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.full-width {
+    width: 100%;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #4a5568;
+}
+
+input,
+select {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.checkbox-group {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.checkbox-group input {
+    width: auto;
+}
+
+.warning-text {
+    color: var(--danger-color);
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.price-input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.price-input-group input {
+    width: 100px;
+    font-weight: bold;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 50px;
+    color: #a0aec0;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+/* Flash */
+.flash-messages {
+    margin-bottom: 20px;
+}
+
+.flash {
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.flash-success {
+    background: #c6f6d5;
+    color: #22543d;
+    border: 1px solid #9ae6b4;
+}
+
+.flash-info {
+    background: #bee3f8;
+    color: #2c5282;
+    border: 1px solid #90cdf4;
+}
+
+.flash-error {
+    background: #fed7d7;
+    color: #742a2a;
+    border: 1px solid #feb2b2;
+}
+
+/* CSV Table Styles */
+.csv-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.csv-table th,
+.csv-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.csv-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.csv-table tr:hover {
+    background-color: #f1f5f9;
+}
+
+.badge {
+    background: #e2e8f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.small-text {
+    font-size: 0.85rem;
+    color: #718096;
+    max-width: 300px;
+}
+
+.download-link {
+    color: white;
+    text-decoration: underline;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.empty-text {
+    text-align: center;
+    color: #a0aec0;
+    padding: 20px;
+}

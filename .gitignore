@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+
+# Logs and Errors
+*.log
+*_err.txt
+*_log.txt
+db_err.txt
+db_log.txt
+ebay_output.txt
+test_write.txt
+
+# Large Data & Assets
+flaccue/
+wavcue/
+listing_photos/
+music_images/
+*.mov
+*.wmv
+
+# HTML generated files (optional, but keeping music_database.html might be good if it's the main output)
+# music_database.html
+
+# System
+desktop.ini
+Thumbs.db
+
+# VSCode
+.vscode/

@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="stage-banner stage-{{ stage }}">
+    <div class="stage-content">
+        {% if stage == 'list' %}
+        <h2>📸 出品リスト作成 (CSV Mode)</h2>
+        <p>詳細を確認し、CSVファイルに追加します。</p>
+        {% elif stage == 'review' %}
+        <h2>🧐 レビューフェーズ (Review)</h2>
+        <p>マッチング精度を確認してください (信頼度 < 80)。</p>
+                {% elif stage == 'drafts' %}
+                <h2>📂 CSVリスト (Export)</h2>
+                <p>追加済みのアイテムです。<a href="{{ url_for('download_csv') }}" class="download-link">📥 CSVをダウンロード</a></p>
+                {% else %}
+                <h2>👋 ようこそ</h2>
+                <p>モードを選択して作業を開始してください。</p>
+                {% endif %}
+    </div>
+    {% if count is defined %}
+    <div class="stage-count">
+        残り <strong>{{ count }}</strong> 件
+    </div>
+    {% endif %}
+</div>
+
+{% if stage == 'drafts' %}
+<div class="card">
+    <div class="card-header">
+        <h3>📄 CSV Data ({{ count }} items)</h3>
+    </div>
+    <div class="card-body" style="overflow-x: auto;">
+        {% if csv_rows %}
+        <table class="csv-table">
+            <thead>
+                <tr>
+                    <th>Release ID</th>
+                    <th>Price</th>
+                    <th>Condition</th>
+                    <th>Comments</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in csv_rows %}
+                <tr>
+                    <td><a href="https://www.discogs.com/release/{{ row['release_id'] }}" target="_blank">{{
+                            row['release_id'] }}</a></td>
+                    <td>${{ row['price'] }}</td>
+                    <td><span class="badge">{{ row['media_condition'] }}</span></td>
+                    <td class="small-text">{{ row['comments'] }}</td>
+                    <td>{{ row['status'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-text">まだデータがありません。</p>
+        {% endif %}
+    </div>
+</div>
+{% elif item %}
+<div class="card">
+    <div class="card-header">
+        <div class="item-id">
+            <span class="badget">ID: {{ item.id }}</span>
+            <span class="status-badge {{ item.listing_status|lower }}">{{ item.listing_status or '未出品' }}</span>
+        </div>
+        <div
+            class="match-score score-{{ 'low' if item.ebay_match_score < 50 else 'med' if item.ebay_match_score < 80 else 'high' }}">
+            スコア: {{ item.ebay_match_score or 0 }}
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="info-grid">
+            <div class="info-section">
+                <h3>💿 データベース情報</h3>
+                <div class="info-row">
+                    <span class="label">アーティスト</span>
+                    <span class="value">{{ item.title.split(' : ')[0] if ' : ' in item.title else item.title }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">タイトル</span>
+                    <span class="value">{{ item.title.split(' : ')[1] if ' : ' in item.title else '' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">規格品番</span>
+                    <span class="value">{{ item.catalog_number }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Discogs ID</span>
+                    <span class="value"><a href="https://www.discogs.com/release/{{ item.discogs_id }}"
+                            target="_blank">{{ item.discogs_id }}</a></span>
+                </div>
+                <div class="price-tag primary">${{ item.median_price or '0.00' }}</div>
+            </div>
+
+            <div class="info-section ebay-section">
+                <h3>🛒 eBay 市場データ</h3>
+                <div class="info-row">
+                    <span class="label">直近落札</span>
+                    <span class="value">${{ item.ebay_sold_price }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">平均価格</span>
+                    <span class="value">${{ item.ebay_avg_price }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">販売数</span>
+                    <span class="value">{{ item.ebay_sold_count }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        {% if stage == 'review' %}
+        <div class="action-buttons">
+            <form action="{{ url_for('reject', item_id=item.id) }}" method="post" class="flex-form">
+                <button type="submit" class="btn btn-reject">✖ 却下 (Reject)</button>
+            </form>
+            <form action="{{ url_for('confirm', item_id=item.id) }}" method="post" class="flex-form">
+                <button type="submit" class="btn btn-confirm">⭕ 承認 (Confirm)</button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if stage == 'list' and item.discogs_id %}
+        <div class="listing-form-wrapper">
+            <form action="{{ url_for('list_discogs', item_id=item.id) }}" method="post" enctype="multipart/form-data"
+                class="listing-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>状態 (Condition)</label>
+                        <select name="condition">
+                            <option value="Mint (M)">Mint (M) - 新品</option>
+                            <option value="Near Mint (NM or M-)" selected>Near Mint (NM) - 新品同様</option>
+                            <option value="Very Good Plus (VG+)">VG+ - 良好</option>
+                            <option value="Very Good (VG)">VG - 普通</option>
+                        </select>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="missing_obi" name="missing_obi" value="1">
+                        <label for="missing_obi" class="warning-text">帯なし (No Obi)</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>📸 写真 (Photo)</label>
+                        <input type="file" name="photo" accept="image/*" capture="environment">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <div class="price-input-group">
+                        <span>$</span>
+                        <input type="number" step="0.01" name="price" value="{{ item.median_price or '9.99' }}">
+                    </div>
+                    <button type="submit" class="btn btn-list">📄 CSVに追加 (Add to CSV)</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">🎉</div>
+    <h2>完了！</h2>
+    <p>このタスクのアイテムはすべて処理されました。</p>
+</div>
+{% endif %}
+{% endblock %}
